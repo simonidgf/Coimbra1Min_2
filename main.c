@@ -1,6 +1,7 @@
 #include "libs.h"
 
 void menuParagens();
+void menuLinhas();
 int menu();
 
 int main()
@@ -49,7 +50,50 @@ void menuParagens()
     do
     {
         system("clear");
-        printf("Paragens...\n\nLista de Paragens Disponiveis (1)\nAdicionar Paragem (A/a)\nEliminar Paragem (E/e)\nProcurar Paragem (P/p)\nLINHAS (L/l)\nVoltar (0)\n>");
+        printf("Paragens...\n\nAdicionar Paragem (A/a)\nEliminar Paragem (E/e)\nProcurar Paragem (P/p)\nLINHAS (L/l)\nVoltar (0)\n>");
+        scanf(" %c", &op);
+        op = toupper(op);
+
+        switch (op)
+        {
+        case 'L':
+            printf("Linhas...");
+            break;
+        
+        case 'A':
+            printf("Linhas..A");
+            break;
+
+        case 'E':
+            printf("Linhas...");
+            break;
+
+        case 'P':
+            printf("Linhas...");
+            break;
+
+        case '0':
+            system("clear");
+            menu();
+            break;
+
+        default:
+            break;
+        }
+
+        noOp = (op != '1') && (op != 'A') && (op != 'E') && (op != 'P') && (op != 'L') && (op != '0'); 
+    } while (noOp);
+}
+
+void menuLinhas()
+{
+    char op = '\0'; 
+    bool noOp = true;
+
+    do
+    {
+        system("clear");
+        printf("Linhas...\n\nAdicionar Linha (A/a)\nAtualizar Linha (R/r)\nVizualizar Linhas (V/v)\nVoltar Menu (M/m)\nVoltar (0)\n>");
         scanf(" %c", &op);
         op = toupper(op);
 
