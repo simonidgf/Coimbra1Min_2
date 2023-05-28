@@ -61,7 +61,7 @@ void menuParagens()
             break;
         
         case 'A':
-            printf("Linhas..A");
+            printf("Linhas...");
             break;
 
         case 'E':
@@ -112,7 +112,7 @@ void menuLinhas()
             break;
 
         case 'M':
-            printf("Linhas...");
+            menu();
             break;
 
         case '0':
