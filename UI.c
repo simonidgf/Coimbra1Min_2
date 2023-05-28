@@ -57,7 +57,7 @@ void menuParagens()
         switch (op)
         {
         case 'L':
-            printf("Linhas...");
+            menuLinhas();
             break;
         
         case 'A':
@@ -81,7 +81,7 @@ void menuParagens()
             break;
         }
 
-        noOp = (op != '1') && (op != 'A') && (op != 'E') && (op != 'P') && (op != 'L') && (op != '0'); 
+        noOp = (op != 'A') && (op != 'E') && (op != 'P') && (op != 'L') && (op != '0'); 
     } while (noOp);
 }
 
@@ -99,7 +99,7 @@ void menuLinhas()
 
         switch (op)
         {
-        case 'L':
+        case 'R':
             printf("Linhas...");
             break;
         
@@ -107,27 +107,23 @@ void menuLinhas()
             printf("Linhas..A");
             break;
 
-        case 'E':
+        case 'V':
             printf("Linhas...");
             break;
 
-        case 'P':
-            printf("Linhas...");
-            break;
-
-        case '1':
+        case 'M':
             printf("Linhas...");
             break;
 
         case '0':
             system("clear");
-            menu();
+            menuParagens();
             break;
 
         default:
             break;
         }
 
-        noOp = (op != '1') && (op != 'A') && (op != 'E') && (op != 'P') && (op != 'L') && (op != '0'); 
+        noOp = (op != 'A') && (op != 'R') && (op != 'V') && (op != 'M') && (op != '0'); 
     } while (noOp);
 }
