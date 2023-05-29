@@ -4,13 +4,13 @@
 
 // Definição da estrutura Paragem (Parada)
 typedef struct paragem{
-    char codigo[5];
-    char nome[50];
+    char codigo[CODE_LENGTH];
+    char nome[MAX_LENGTH];
 } Paragem;
 
 // Definição da estrutura Linha
 typedef struct linha {
-    char nome[50];
+    char nome[MAX_LENGTH];
     struct linha *proxima;
     struct linha *anterior;
     Paragem *paragens;

@@ -23,7 +23,7 @@ void atualizarLinha(Linha *linhas, int numLinhas) {
     
     // Atualizar a linha se for encontrada
     if (encontrada) {
-        // Implemente a lógica para adicionar ou remover paragens da linha
+        // Implementar a lógica para adicionar ou remover paragens da linha
         // (você pode solicitar ao utilizador as ações desejadas)
         
         printf("Linha atualizada com sucesso.\n");
