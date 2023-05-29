@@ -16,7 +16,7 @@ int menu()
     bool noOp = true;
 
     do {
-        system("clear");
+        system("cls");
         printf("\n\nCoimbra1Min (Metro Mondego)\n\nParagens (P/p)\nSair (0)\n>");
         scanf(" %c", &op);
         op = toupper(op);
@@ -49,7 +49,7 @@ void menuParagens()
 
     do
     {
-        system("clear");
+        system("cls");
         printf("Paragens...\n\nAdicionar Paragem (A/a)\nEliminar Paragem (E/e)\nProcurar Paragem (P/p)\nLINHAS (L/l)\nVoltar (0)\n>");
         scanf(" %c", &op);
         op = toupper(op);
@@ -73,7 +73,7 @@ void menuParagens()
             break;
 
         case '0':
-            system("clear");
+            system("cls");
             menu();
             break;
 
@@ -92,7 +92,7 @@ void menuLinhas()
 
     do
     {
-        system("clear");
+        system("cls");
         printf("Linhas...\n\nAdicionar Linha (A/a)\nAtualizar Linha (R/r)\nVizualizar Linhas (V/v)\nVoltar Menu (M/m)\nVoltar (0)\n>");
         scanf(" %c", &op);
         op = toupper(op);
@@ -116,7 +116,7 @@ void menuLinhas()
             break;
 
         case '0':
-            system("clear");
+            system("cls");
             menuParagens();
             break;
 

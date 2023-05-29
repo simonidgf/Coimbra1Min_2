@@ -1,4 +1,4 @@
-#include "struct.h" // Inclua o arquivo header correspondente
+#include "struct.h" 
 
 void atualizarLinha(Linha *linhas, int numLinhas) {
     char nomeLinha[50];

@@ -1,4 +1,4 @@
-#include "struct.h" // Inclua o arquivo header correspondente
+#include "struct.h" 
 
 void registarParagem(Paragem **paragens, int *numParagens) {
     // Alocar espaço para uma nova paragem

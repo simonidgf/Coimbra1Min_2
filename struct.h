@@ -3,7 +3,7 @@
 #define STRUCT_H
 
 // Definição da estrutura Paragem (Parada)
-typedef struct {
+typedef struct paragem{
     char codigo[5];
     char nome[50];
 } Paragem;
