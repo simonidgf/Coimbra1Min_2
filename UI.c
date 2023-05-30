@@ -1,4 +1,7 @@
-#include "libs.h"
+#include "struct.h"
+#include "struct_functions_linhas.c"
+#include "struct_functions_paragens.c"
+#include "struct_management_functions.c"
 
 void menuParagens();
 void menuLinhas();
@@ -42,47 +45,53 @@ int menu()
     return 0;
 }
 
-void menuParagens()
-{
-    char op = '\0'; 
+void menuParagens() {
+    Paragem *p = NULL;
+    int numParagens = 0;
+    char op = '\0';
     bool noOp = true;
 
-    do
-    {
+    do {
         system("cls");
-        printf("Paragens...\n\nAdicionar Paragem (A/a)\nEliminar Paragem (E/e)\nProcurar Paragem (P/p)\nLINHAS (L/l)\nVoltar (0)\n>");
+        printf("Paragens...\n\nAdicionar Paragem (A/a)\nEliminar Paragem (E/e)\nVisualizar Paragem (V/v)\nProcurar Paragem (P/p)\nLINHAS (L/l)\nVoltar (0)\n>");
         scanf(" %c", &op);
         op = toupper(op);
 
-        switch (op)
-        {
-        case 'L':
-            menuLinhas();
-            break;
-        
-        case 'A':
-            printf("Linhas...");
-            break;
+        switch (op) {
+            case 'L':
+                menuLinhas();
+                break;
 
-        case 'E':
-            printf("Linhas...");
-            break;
+            case 'A':
+                registarParagem(&p, &numParagens);
+                menuParagens();
+                break;
 
-        case 'P':
-            printf("Linhas...");
-            break;
+            case 'E':
+                printf("Linhas...");
+                break;
 
-        case '0':
-            system("cls");
-            menu();
-            break;
+            case 'P':
+                printf("Linhas...");
+                break;
 
-        default:
-            break;
+            case 'V':
+                visualizarParagens(p, numParagens);
+                break;
+
+            case '0':
+                system("cls");
+                menu();
+                break;
+
+            default:
+                break;
         }
 
-        noOp = (op != 'A') && (op != 'E') && (op != 'P') && (op != 'L') && (op != '0'); 
+        noOp = (op != 'A') && (op != 'E') && (op != 'P') && (op != 'L') && (op != '0') && (op != 'V');
     } while (noOp);
+
+    free(p); 
 }
 
 void menuLinhas()

@@ -24,7 +24,6 @@ void atualizarLinha(Linha *linhas, int numLinhas) {
     // Atualizar a linha se for encontrada
     if (encontrada) {
         // Implementar a lógica para adicionar ou remover paragens da linha
-        // (você pode solicitar ao utilizador as ações desejadas)
         
         printf("Linha atualizada com sucesso.\n");
     } else {
@@ -39,7 +38,7 @@ void visualizarLinhas(Linha *linhas, int numLinhas) {
     
     while (linhaAtual != NULL) {
         printf("Nome: %s\n", linhaAtual->nome);
-        // Implemente a lógica para mostrar as paragens da linha
+        // Implementar a lógica para mostrar as paragens da linha
         
         linhaAtual = linhaAtual->proxima;
     }
@@ -49,13 +48,12 @@ void adicionarLinha(Linha **linhas, int *numLinhas, Paragem *paragens, int numPa
     // Alocar espaço para uma nova linha
     Linha *novaLinha = (Linha *)malloc(sizeof(Linha));
     
-    // Solicitar o nome da linha ao utilizador
+    // Dar o nome ou numero da linha ao utilizador
     printf("Introduza o nome da linha: ");
     fgets(novaLinha->nome, sizeof(novaLinha->nome), stdin);
     novaLinha->nome[strcspn(novaLinha->nome, "\n")] = '\0'; // Remover o caractere '\n' do final
     
-    // Implemente a lógica para adicionar as paragens à nova linha
-    // (você pode solicitar ao utilizador as paragens da linha)
+    // Implementar a lógica para adicionar as paragens à nova linha
     
     // Atribuir o número de paragens à nova linha
     novaLinha->numParagens = numParagens;
