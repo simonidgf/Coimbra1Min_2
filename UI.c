@@ -3,6 +3,9 @@
 #include "struct_functions_paragens.c"
 #include "struct_management_functions.c"
 
+Paragem *paragens = NULL;
+Linha *linhas = NULL;
+
 void menuParagens();
 void menuLinhas();
 int menu();
@@ -13,13 +16,12 @@ int main()
     return 0;
 }
 
-menu()
+int menu()
 {
     char op = '\0'; 
     bool noOp = true;
 
     do {
-        system("cls");
         printf("\n\nCoimbra1Min (Metro Mondego)\n\nParagens (P/p)\nSair (0)\n>");
         scanf(" %c", &op);
         op = toupper(op);
@@ -46,13 +48,11 @@ menu()
 }
 
 void menuParagens() {
-    Paragem *paragens = NULL;
     int numParagens = 0;
     char op = '\0';
     bool noOp = true;
 
     do {
-        system("cls");
         printf("Paragens...\n\nAdicionar Paragem (A/a)\nEliminar Paragem (E/e)\nVisualizar Paragem (V/v)\nProcurar Paragem (P/p)\nLINHAS (L/l)\nVoltar (0)\n>");
         scanf(" %c", &op);
         op = toupper(op);
@@ -63,11 +63,12 @@ void menuParagens() {
                 break;
 
             case 'A':
-                if (AdicionarParagem(&paragens, &numParagens))
+                if (AdicionarParagem(&paragens, numParagens)) {
                     printf("Adicionado com sucesso.\n");
-                else
+                } else {
                     printf("Falha ao adicionar paragem.\n");
-                
+                }
+                menuParagens();
                 break;
 
             case 'E':
@@ -79,7 +80,10 @@ void menuParagens() {
                 break;
 
             case 'V':
-                printf("Visualizar paragem...\n");
+                if (!VisualizarParagens(paragens, numParagens)) {
+                    perror("Erro");
+                }
+                menuParagens();
                 break;
 
             case '0':
@@ -94,6 +98,7 @@ void menuParagens() {
         noOp = (op != 'A') && (op != 'E') && (op != 'P') && (op != 'L') && (op != '0') && (op != 'V');
     } while (noOp);
 }
+
 
 void menuLinhas()
 {

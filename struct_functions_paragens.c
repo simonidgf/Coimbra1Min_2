@@ -1,6 +1,8 @@
 #include "struct.h" 
 
-bool AdicionarParagem(Paragem **paragens, int *num_paragens) {
+
+// * Funcao para Adicionar *
+bool AdicionarParagem(Paragem **paragens, int num_paragens) {
     Paragem *novaParagem = malloc(sizeof(Paragem));
     if (novaParagem == NULL) {
         return false;
@@ -20,19 +22,44 @@ bool AdicionarParagem(Paragem **paragens, int *num_paragens) {
     }
     novaParagem->codigo[5] = '\0'; 
 
-    novaParagem->nLinhas = 0;
+    novaParagem->numLinhas = 0;
+    novaParagem->linhas = NULL;
 
-    (*num_paragens)++;
-    novaParagem->numParagens = *num_paragens;
+    num_paragens++;
+    novaParagem->numParagens = num_paragens;
 
-    Paragem **temp = realloc(*paragens, sizeof(Paragem *) * (*num_paragens));
+    Paragem **temp = realloc(*paragens, sizeof(Paragem *) * num_paragens);
     if (temp == NULL) {
         free(novaParagem);
         return false;
     }
     *paragens = (Paragem *)temp;
-    (*paragens)[(*num_paragens) - 1] = *(novaParagem);
+    (*paragens)[num_paragens - 1] = *(novaParagem);
 
     return true;
 }
+
+
+bool VisualizarParagens(Paragem *paragens, int num_paragens) {
+    int i = 0;
+    for (; i < num_paragens; i++) {
+        printf("Paragem %d\n", i + 1);
+        printf("Nome: %s\n", paragens[i].nome);
+        printf("Codigo: %s\n", paragens[i].codigo);
+        printf("Numero de Linhas: %d\n", paragens[i].numLinhas);
+
+        // Display the associated train lines
+        for (int j = 0; j < paragens[i].numLinhas; j++) {
+            printf("Linha %d: %s\n", j + 1, paragens[i].linhas[j]->nome);
+        }
+
+        putchar('\n');
+    }
+
+    if (i == 0) return false;
+    else return true;
+}
+
+
+
 
