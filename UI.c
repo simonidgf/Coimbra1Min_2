@@ -13,7 +13,7 @@ int main()
     return 0;
 }
 
-int menu()
+menu()
 {
     char op = '\0'; 
     bool noOp = true;
@@ -46,7 +46,7 @@ int menu()
 }
 
 void menuParagens() {
-    Paragem *p = NULL;
+    Paragem *paragens = NULL;
     int numParagens = 0;
     char op = '\0';
     bool noOp = true;
@@ -63,20 +63,23 @@ void menuParagens() {
                 break;
 
             case 'A':
-                registarParagem(&p, &numParagens);
-                menuParagens();
+                if (AdicionarParagem(&paragens, &numParagens))
+                    printf("Adicionado com sucesso.\n");
+                else
+                    printf("Falha ao adicionar paragem.\n");
+                
                 break;
 
             case 'E':
-                printf("Linhas...");
+                printf("Eliminar paragem...\n");
                 break;
 
             case 'P':
-                printf("Linhas...");
+                printf("Procurar paragem...\n");
                 break;
 
             case 'V':
-                visualizarParagens(p, numParagens);
+                printf("Visualizar paragem...\n");
                 break;
 
             case '0':
@@ -90,8 +93,6 @@ void menuParagens() {
 
         noOp = (op != 'A') && (op != 'E') && (op != 'P') && (op != 'L') && (op != '0') && (op != 'V');
     } while (noOp);
-
-    free(p); 
 }
 
 void menuLinhas()
