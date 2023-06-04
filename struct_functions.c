@@ -37,7 +37,7 @@ bool visualizarParagens(Paragem *paragens, int num_paragens) {
     }
 
     for (i = 0; i < num_paragens; i++) {
-        printf("Paragem %d\n", i + 1);
+        printf("\nParagem %d\n", i + 1);
         printf("Nome: %s\n", paragens[i].Nome);
         printf("Codigo: %s\n", paragens[i].Codigo);
         printf("Numero de Linhas: %d\n", paragens[i].n_Linhas);

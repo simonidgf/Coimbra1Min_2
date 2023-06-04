@@ -7,7 +7,7 @@ int menu(Paragem *array_paragens, int num_paragens)
     bool noOp = true;
 
     do {
-        printf("\n\nCoimbra1Min (Metro Mondego)\n\nAdicionar Paragem (A/a)\nProcurar Paragem (P/p)\nEliminar Paragem (E/e)\nVisualizar Paragens (V/v)\nSair (0)\n>");
+        printf("\n\nCoimbra1Min (Metro Mondego)\n\nAdicionar Paragem (A/a)\nProcurar Paragem (P/p)\nEliminar Paragem (E/e)\nVisualizar Paragens (V/v)\nMenu Linhas (L/l)\nSair (0)\n>");
         scanf(" %c", &op);
         op = toupper(op);
 
@@ -25,6 +25,7 @@ int menu(Paragem *array_paragens, int num_paragens)
 
         case 'P':
             Paragem paragem_procurada = procurarParagem(&array_paragens, &num_paragens);
+            visualizarParagens(&paragem_procurada, 1);
             menu(array_paragens, num_paragens);
             break;
 
@@ -38,11 +39,15 @@ int menu(Paragem *array_paragens, int num_paragens)
             menu(array_paragens, num_paragens);
             break;
 
+        case 'L':
+            printf("Linhas");
+            break;
+
         default:
             break;
         }
 
-        noOp = (op != '0') && (op != 'P');
+        noOp = (op != '0') && (op != 'L') && (op != 'A') && (op != 'E') && (op != 'P') && (op != 'V');
     } while (noOp);
 
     return 0;
