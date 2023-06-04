@@ -8,28 +8,26 @@
 #include <ctype.h>
 #include <time.h>
 
-#define CODE_LENGTH 5
-#define MAX_LENGTH 100
-
-// Definição da estrutura Linha
 typedef struct linha {
-    int numero;
-    int numParagens;
-    struct linha *proxima;
+    int Numero_Linha;
     struct linha *anterior;
+    struct linha *seguinte;
+    int n_total_paragens;
 } Linha;
 
-typedef struct paragem{
-    char nome[50];
-    char codigo[6];
-    int numLinhas;
-    int numParagens;
-    Linha *linhas;
+typedef struct paragem {
+    char Nome[50];
+    char Codigo[6];
+    int n_Linhas;
+    int n_total_paragens;
+   struct linha *linha;
 } Paragem;
 
 
-bool AdicionarParagem(Paragem **paragens, int num_paragens);
-bool VisualizarParagens(Paragem *paragens, int num_paragens);
+void adicionarParagem(Paragem **paragens, int *numero_paragens);
+bool visualizarParagens(Paragem *paragens, int num_paragens);
+bool eliminarParagem(Paragem **paragens, int *num_paragens);
+Paragem procurarParagem(Paragem **paragens, int *num_paragens);
 
 /* Funções para manipulação das paragens
 void registarParagem(Paragem **paragens, int *numParagens);
