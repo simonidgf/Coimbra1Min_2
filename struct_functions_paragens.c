@@ -41,8 +41,15 @@ bool AdicionarParagem(Paragem **paragens, int num_paragens) {
 
 
 bool VisualizarParagens(Paragem *paragens, int num_paragens) {
-    int i = 0;
-    for (; i < num_paragens; i++) {
+    int i;
+
+    if (num_paragens == 0)
+    {
+        printf("Nao existem paragens...\n\n");
+        return false;
+    }
+    
+    for (i = 0; i < num_paragens; i++) {
         printf("Paragem %d\n", i + 1);
         printf("Nome: %s\n", paragens[i].nome);
         printf("Codigo: %s\n", paragens[i].codigo);
@@ -50,7 +57,7 @@ bool VisualizarParagens(Paragem *paragens, int num_paragens) {
 
         // Display the associated train lines
         for (int j = 0; j < paragens[i].numLinhas; j++) {
-            printf("Linha %d: %s\n", j + 1, paragens[i].linhas[j]->nome);
+            printf("Linha %d: %s\n", j + 1, paragens[i].linhas[j].numero);
         }
 
         putchar('\n');

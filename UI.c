@@ -3,8 +3,7 @@
 #include "struct_functions_paragens.c"
 #include "struct_management_functions.c"
 
-Paragem *paragens = NULL;
-Linha *linhas = NULL;
+
 
 void menuParagens();
 void menuLinhas();
@@ -18,6 +17,8 @@ int main()
 
 int menu()
 {
+    Paragem *paragens = malloc(sizeof(Paragem));
+    Linha *linhas = malloc(sizeof(Linha));
     char op = '\0'; 
     bool noOp = true;
 
@@ -34,7 +35,7 @@ int menu()
             break;
 
         case 'P':
-            menuParagens();
+            menuParagens(paragens, linhas);
             break;
 
         default:
@@ -47,7 +48,8 @@ int menu()
     return 0;
 }
 
-void menuParagens() {
+void menuParagens(Paragem *paragens, Linha *linhas) {
+
     int numParagens = 0;
     char op = '\0';
     bool noOp = true;
@@ -59,16 +61,16 @@ void menuParagens() {
 
         switch (op) {
             case 'L':
-                menuLinhas();
+                menuLinhas(paragens, linhas);
                 break;
 
             case 'A':
                 if (AdicionarParagem(&paragens, numParagens)) {
                     printf("Adicionado com sucesso.\n");
+                    numParagens++;
                 } else {
                     printf("Falha ao adicionar paragem.\n");
                 }
-                menuParagens();
                 break;
 
             case 'E':
@@ -80,27 +82,24 @@ void menuParagens() {
                 break;
 
             case 'V':
-                if (!VisualizarParagens(paragens, numParagens)) {
-                    perror("Erro");
-                }
-                menuParagens();
+                VisualizarParagens(paragens, numParagens);
                 break;
 
             case '0':
                 system("cls");
                 menu();
-                break;
 
             default:
                 break;
         }
+        menuParagens(paragens, linhas);
 
         noOp = (op != 'A') && (op != 'E') && (op != 'P') && (op != 'L') && (op != '0') && (op != 'V');
     } while (noOp);
 }
 
 
-void menuLinhas()
+void menuLinhas(Paragem *paragens, Linha *linhas)
 {
     char op = '\0'; 
     bool noOp = true;
@@ -132,7 +131,7 @@ void menuLinhas()
 
         case '0':
             system("cls");
-            menuParagens();
+            menuParagens(paragens, linhas);
             break;
 
         default:

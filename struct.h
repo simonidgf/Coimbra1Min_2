@@ -12,21 +12,22 @@
 #define MAX_LENGTH 100
 
 // Definição da estrutura Linha
-typedef struct Linha Linha;
+typedef struct linha {
+    int numero;
+    int numParagens;
+    struct linha *proxima;
+    struct linha *anterior;
+} Linha;
 
-typedef struct {
+typedef struct paragem{
     char nome[50];
     char codigo[6];
     int numLinhas;
     int numParagens;
-    Linha **linhas;
+    Linha *linhas;
 } Paragem;
 
-struct Linha {
-    char nome[50];
-    int numParagens;
-    Paragem **paragens;
-};
+
 bool AdicionarParagem(Paragem **paragens, int num_paragens);
 bool VisualizarParagens(Paragem *paragens, int num_paragens);
 
