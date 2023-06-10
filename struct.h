@@ -30,10 +30,17 @@ typedef struct linha
    Paragem *paragens;
 } Linha;
 
+// * Linhas
+Linha procuraLinhaEspecifica(Linha* linhas, int numero_linhas, char NomeLinha[TAMANHO_MAX]);
 void adicionarLinhas(Linha** linhas, int* numero_linhas);
 void visualizarLinhas(Linha* linhas, int numero_linhas);
 bool eliminarLinha(Linha** linhas, int* numero_linhas);
-Linha procuraLinhaExpecifica(Linha** linhas, int* numero_linhas);
+//Funcao Atualizar Linha (Ver Enunciado)
 
+// * Paragens
+Paragem procurarParagemEspecifica(Paragem* paragens, int numero_paragens, char NomeParagem[TAMANHO_MAX]);
+void registarParagem(Paragem** paragens, int* numero_paragens);
+void visualizarParagens(Paragem* paragens, int numero_paragens);
+bool eliminarParagem(Paragem** paragens, int* numero_paragens);
 
 #endif 

@@ -70,9 +70,11 @@ void menuParagens(Paragem** array_paragens, int* numero_paragens)
 
       switch (opcao) {
          case 1:
+            //Adicionar paragem a linha/Linhas 
             fflush(stdin);
             break;
          case 2:
+            //
             fflush(stdin);
             break;
          case 3:
