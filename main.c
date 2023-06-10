@@ -1,67 +1,99 @@
-#include "struct.h"
 #include "struct_functions.c"
 
-int menu(Paragem *array_paragens, int num_paragens)
-{
-    char op = '\0'; 
-    bool noOp = true;
+Paragem* array_paragens = NULL;
+Linha* array_linhas = NULL;
+int numero_paragens = 0, numero_linhas = 0;
 
-    do {
-        printf("\n\nCoimbra1Min (Metro Mondego)\n\nAdicionar Paragem (A/a)\nProcurar Paragem (P/p)\nEliminar Paragem (E/e)\nVisualizar Paragens (V/v)\nMenu Linhas (L/l)\nSair (0)\n>");
-        scanf(" %c", &op);
-        op = toupper(op);
-
-        switch (op)
-        {
-        case '0':
-            printf("\n\nAté já :)\n");
-            return 0;
-            break;
-
-        case 'A':
-            adicionarParagem(&array_paragens, &num_paragens);
-            menu(array_paragens, num_paragens);
-            break;
-
-        case 'P':
-            Paragem paragem_procurada = procurarParagem(&array_paragens, &num_paragens);
-            visualizarParagens(&paragem_procurada, 1);
-            menu(array_paragens, num_paragens);
-            break;
-
-        case 'E':
-            eliminarParagem(&array_paragens, &num_paragens);
-            menu(array_paragens, num_paragens);
-            break;
-
-        case 'V':
-            visualizarParagens(array_paragens, num_paragens);
-            menu(array_paragens, num_paragens);
-            break;
-
-        case 'L':
-            printf("Linhas");
-            break;
-
-        default:
-            break;
-        }
-
-        noOp = (op != '0') && (op != 'L') && (op != 'A') && (op != 'E') && (op != 'P') && (op != 'V');
-    } while (noOp);
-
-    return 0;
-}
+void menuParagens(Paragem** array_paragens, int* numero_paragens);
+void menuLinhas(Linha** array_linhas, int* numero_linhas);
 
 int main()
 {
-    Paragem *p = NULL;
-    int numero_paragens = 0;
+   int opcao;
 
-    menu(p, numero_paragens);
+   do {
+      printf("\n=====================\n");
+      printf("=        Menu       =\n");
+      printf("=====================\n"); 
+      printf("= 1. Linhas         =\n");
+      printf("= 2. Paragens       =\n");
+      printf("= 0. Sair           =\n");
+      printf("=====================\n");
 
-    free(p);
+      printf("Escolha uma opcao: ");
+      scanf("%d", &opcao);
+      printf("\n");
 
-    return 0;
+      switch (opcao) {
+         case 1:
+            menuLinhas(&array_linhas, &numero_linhas);
+            break;
+         case 2:
+            menuParagens(&array_paragens, &numero_paragens);
+            break;
+         case 0:
+            printf("Ate Ja :D ... \n");
+            exit(0);
+            break;
+         default:
+            printf(" Opcao invalida. Tente novamente. \n");
+            break;
+      }
+   } while (opcao != 0);
+
+   return 0;
 }
 
+void menuParagens(Paragem** array_paragens, int* numero_paragens)
+{
+   int opcao;
+
+   printf("============\n");
+   printf("= Paragens =\n");
+   printf("============\n");
+}
+
+void menuLinhas(Linha** array_linhas, int* numero_linhas)
+{
+   int opcao;
+
+   do
+   {
+      printf("=================\n");
+      printf("=     Linhas    =\n");
+      printf("=================\n");
+      printf("= 1. Adicionar  =\n");
+      printf("= 2. Eliminar   =\n");
+      printf("= 3. Visualizar =\n");
+      printf("=================\n");
+      printf("= 9. Voltar     =\n");
+      printf("= 0. Sair       =\n");
+      printf("=================\n");
+      printf("Escolha uma opcao: ");
+      scanf("%d", &opcao);
+      printf("\n");
+
+      switch (opcao) {
+         case 1:
+            adicionarLinhas(array_linhas, numero_linhas);
+            break;
+         case 2:
+            eliminarLinha(array_linhas, numero_linhas);
+            break;
+         case 3:
+            visualizarLinhas(*array_linhas, *numero_linhas);
+            break;
+         case 9:
+            main();
+            break;
+         case 0:
+            printf("Ate Ja :D ... \n");
+            exit(0);
+            break;
+         default:
+            printf(" Opcao invalida. Tente novamente. \n");
+            break;
+      }
+   } while (opcao != 0);
+   
+}
