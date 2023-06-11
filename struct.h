@@ -9,7 +9,8 @@
 #include <time.h>
 #include <ctype.h>
 
-#define TAMANHO_MAX 50
+#define MAX_PARAGENS 200
+#define TAMANHO_MAX 100
 #define TAMANHO_COD 6
 
 typedef struct paragem
@@ -26,9 +27,10 @@ typedef struct linha
 {
    char Nome[TAMANHO_MAX];
    int numero_paragens;
-   int numeros_linhas;
    Paragem *paragens;
+   struct linha* prox;
 } Linha;
+
 
 // * Linhas
 Linha procuraLinhaEspecifica(Linha* linhas, int numero_linhas, char NomeLinha[TAMANHO_MAX]);
@@ -38,7 +40,7 @@ bool eliminarLinha(Linha** linhas, int* numero_linhas);
 // * Funcao Atualizar Linha (Ver Enunciado)
 void adicionarParagemLinha(Linha* linha, Paragem* paragem);
 bool removerParagemLinha(Linha* linha, char* nomeParagem);
-
+void atualizar(Paragem* paragens, Linha* linhas, int numero_linhas, int numero_paragens);
 
 // * Paragens
 Paragem procurarParagemEspecifica(Paragem* paragens, int numero_paragens, char NomeParagem[TAMANHO_MAX]);

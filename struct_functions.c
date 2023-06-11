@@ -1,5 +1,8 @@
 #include "struct.h"
 
+
+
+
 // *************************************************************************************************************************
 // * LINHAS
 // *************************************************************************************************************************
@@ -18,7 +21,7 @@ void adicionarLinhas(Linha** linhas, int* numero_linhas)
       printf("Nome: ");
       scanf("%s", nova->Nome);
       Linha l = procuraLinhaEspecifica(*linhas, *numero_linhas, nova->Nome);
-      if(strcmp(l.Nome, "") != 0) {
+      if (strcmp(l.Nome, "") != 0) {
          puts("Nome ja existe, escolha outro...\n");
       }
       else {
@@ -30,44 +33,50 @@ void adicionarLinhas(Linha** linhas, int* numero_linhas)
    nova->Nome[strcspn(nova->Nome, "\n")] = '\0';
 
    nova->numero_paragens = 0;
-   nova->numeros_linhas = (*numero_linhas) + 1;
    nova->paragens = NULL;
+   nova->prox = NULL;
 
-   (*linhas) = (Linha*)realloc((*linhas), ((*numero_linhas) + 1) * sizeof(Linha));
-   if ((*linhas) == NULL) {
+   if (*linhas == NULL) {
+      *linhas = nova;  // A lista estava vazia, então o novo nó é o primeiro da lista
+   } else {
+      Linha* atual = *linhas;
+      while (atual->prox != NULL) {
+         atual = atual->prox;  // Avança até o último nó da lista
+      }
+      atual->prox = nova;  // Adiciona o novo nó como o próximo do último nó
+   }
+
+   (*numero_linhas)++;
+
+   *linhas = (Linha*)realloc(*linhas, (*numero_linhas) * sizeof(Linha));
+   if (*linhas == NULL) {
       printf("Erro 102\n");
       free(nova);
       return;
    }
 
-   (*linhas)[*numero_linhas] = *nova;
-   (*numero_linhas)++;
-
-   free(nova);
+   (*linhas)[*numero_linhas - 1] = *nova;
 }
 
 void visualizarLinhas(Linha* linhas, int numero_linhas)
 {
    printf("Linhas Disponiveis:\n");
-
-   if (numero_linhas == 0) {
-      printf("Nao ha linhas disponiveis.\n");
-      return;
-   }
-
    for (int i = 0; i < numero_linhas; i++) {
       printf("- %s\n", linhas[i].Nome);
-
-      if (linhas[i].numero_paragens == 0) {
+      Paragem* paragem = linhas[i].paragens;
+      if (paragem == NULL) {
          printf("  Nao ha paragens adicionadas.\n");
       } else {
-         printf("  Paragens .:\n");
-         for (int j = 0; j < linhas[i].numero_paragens; j++) {
-            printf("  - %s\n", linhas[i].paragens[j].Nome);
+         printf("  Paragens adicionadas:\n");
+         while (paragem != NULL) {
+            printf("  - %s # %s\n", paragem->Nome, paragem->Codigo);
+            paragem = paragem->proxima;
          }
       }
    }
 }
+
+
 
 bool eliminarLinha(Linha** linhas, int* numero_linhas)
 {
@@ -112,6 +121,14 @@ Linha procuraLinhaEspecifica(Linha* linhas, int numero_linhas, char NomeLinha[TA
    Linha linhaVazia = {"", 0, 0, NULL};
    return linhaVazia;
 }
+
+
+
+
+
+
+
+
 
 // *************************************************************************************************************************
 // * PARAGENS
@@ -210,58 +227,83 @@ bool eliminarParagem(Paragem** paragens, int* numero_paragens)
 }
 
 
+
+
+
+
+
+
+
 // * * Funções do Atualizar
 
 void adicionarParagemLinha(Linha* linha, Paragem* paragem)
 {
-   Paragem* novaParagem = (Paragem*)malloc(sizeof(Paragem));
-   if (novaParagem == NULL) {
+   if (paragem == NULL) {
       printf("Erro 103\n");
       return;
    }
 
-   *novaParagem = *paragem;
-   novaParagem->proxima = linha->paragens;
-   novaParagem->anterior = NULL;
+   paragem->proxima = NULL;
+   paragem->anterior = NULL;
 
-   if (linha->paragens != NULL) {
-      linha->paragens->anterior = novaParagem;
+   if (linha->paragens == NULL) {
+      linha->paragens = (Paragem*)malloc(sizeof(Paragem));
+      *linha->paragens = *paragem;
+   } else {
+      Paragem* nova_paragem = (Paragem*)realloc(linha->paragens, (linha->numero_paragens + 1) * sizeof(Paragem));
+      if (nova_paragem == NULL) {
+         printf("Erro na realocação de memória\n");
+         return;
+      }
+      linha->paragens = nova_paragem;
+      linha->paragens[linha->numero_paragens] = *paragem;
+
+      // Configurar ligações entre as paragens
+      linha->paragens[linha->numero_paragens - 1].proxima = &linha->paragens[linha->numero_paragens];
+      linha->paragens[linha->numero_paragens].anterior = &linha->paragens[linha->numero_paragens - 1];
    }
 
-   linha->paragens = novaParagem;
    linha->numero_paragens++;
 }
 
+
 bool removerParagemLinha(Linha* linha, char* nomeParagem)
 {
-   Paragem* current = linha->paragens;
+   Paragem* paragens = linha->paragens;
 
-   while (current != NULL) {
-      if (strcmp(current->Nome, nomeParagem) == 0) {
-         if (current->anterior != NULL) {
-            current->anterior->proxima = current->proxima;
-         } else {
-            linha->paragens = current->proxima;
+   for (int i = 0; i < linha->numero_paragens; i++)
+   {
+      if (strcmp(paragens[i].Nome, nomeParagem) == 0)
+      {
+         // Remover a paragem encontrada
+         for (int j = i; j < linha->numero_paragens - 1; j++)
+         {
+            paragens[j] = paragens[j + 1];
          }
 
-         if (current->proxima != NULL) {
-            current->proxima->anterior = current->anterior;
-         }
-
-         free(current);
          linha->numero_paragens--;
+
+         // Realocar a memória, se necessário
+         Paragem* nova_paragem = (Paragem*)realloc(linha->paragens, linha->numero_paragens * sizeof(Paragem));
+         if (nova_paragem == NULL && linha->numero_paragens > 0)
+         {
+            printf("Erro na realocação de memória\n");
+            return false;
+         }
+         linha->paragens = nova_paragem;
+
          printf("Paragem \"%s\" removida com sucesso.\n", nomeParagem);
          return true;
       }
-
-      current = current->proxima;
    }
 
    printf("Nao houve nenhuma paragem com o nome %s encontrada!\n", nomeParagem);
    return false;
 }
 
-void atualizar(Linha* linhas, int numero_linhas)
+
+
+void atualizar(Paragem* paragens, Linha* linhas, int numero_linhas, int numero_paragens)
 {
    char nome[TAMANHO_MAX];
    printf("Que linha pretende atualizar (Nome): ");
@@ -296,18 +338,31 @@ void atualizar(Linha* linhas, int numero_linhas)
             char nome_paragem[TAMANHO_MAX];
             scanf("%s", nome_paragem);
 
-            Paragem paragem;
-            strcpy(paragem.Nome, nome_paragem);
+            Paragem paragem = procurarParagemEspecifica(paragens, numero_paragens, nome_paragem);
+            if (strcmp(paragem.Nome, "") == 0)
+            {
+               printf("A paragem com o nome %s nao existe\n", nome_paragem);
+               break;
+            }
 
             adicionarParagemLinha(linha, &paragem);
             break;
+
          case 2:
             printf("Paragem para remover: ");
             char nome_paragem_remover[TAMANHO_MAX];
             scanf("%s", nome_paragem_remover);
 
+            Paragem p = procurarParagemEspecifica(paragens, numero_paragens, nome_paragem_remover);
+            if (strcmp(p.Nome, "") == 0)
+            {
+               printf("A paragem com o nome %s não foi encontrada. Não é possível removê-la.\n", nome_paragem_remover);
+               break;
+            }
+
             removerParagemLinha(linha, nome_paragem_remover);
             break;
+
          case 0:
             return;
          default:
@@ -316,3 +371,183 @@ void atualizar(Linha* linhas, int numero_linhas)
       }
    } while (opcao != 0);
 }
+
+
+
+
+
+
+
+// * Percursos **************************************************
+
+void calcularPercurso(Paragem* stops, Linha* lines) {
+      char origem[32], destino[32];
+
+      // Falta verificar existencia das stops
+      printf("Origem: ");
+      scanf(" %s", origem);
+      printf("Destino: ");
+      scanf(" %s", destino);
+
+      int percusoEncontrado = 0, indiceOrigem = -1, indiceDestino = -1, indiceparagem1 = -1, indiceparagem2 = -1;
+      Linha* line1 = NULL;
+      Linha* line2 = NULL;
+      Linha* atual = lines;
+
+      while(atual != NULL) {
+         int origemEncontrado = 0;
+
+         // Loop passa em todas as stops da line atual e verifica se alguma coincide com a origem pretendida
+         for(int i = 0; i < atual->numero_paragens; i++) {
+               if (strcmp(atual->paragens[i].Nome, origem) == 0)
+               {
+                  origemEncontrado = 1;
+                  indiceOrigem = i;
+                  break;
+               }
+         }
+
+         if (origemEncontrado) {
+               // Loop passa outra vez em todas as stops da line atual e verifica se o destino fica na mesma line
+               for (int i = 0; i < atual->numero_paragens; i++) {
+                  if (strcmp(atual->paragens[i].Nome, destino) == 0)
+                  {
+                     percusoEncontrado = 1;
+                     indiceDestino = i;
+                     line1 = atual;
+                     break;
+                  }
+               }
+
+               if (!percusoEncontrado) {
+                  Linha* conexao = lines;
+
+                  while(conexao != NULL) {
+                     int destinoEncontrado = 0;
+
+                     for (int i = 0; i < conexao->numero_paragens; i++) {
+                           if (strcmp(conexao->paragens[i].Nome, destino) == 0) 
+                           {
+                              destinoEncontrado = 1;
+                              indiceDestino = i;
+                              break;
+                           }
+                     }
+
+                     if (destinoEncontrado) 
+                     {
+                           for (int i = 0; i < atual->numero_paragens; i++) {
+                              for (int j = 0; j < conexao->numero_paragens; j++) {
+                                 
+                                 if (strcmp(atual->paragens[i].Nome, conexao->paragens[j].Nome) == 0) 
+                                 {
+                                       percusoEncontrado = 1;
+                                       line1 = atual;
+                                       line2 = conexao;
+
+                                       indiceparagem1 = i;
+                                       indiceparagem2 = j;
+                                       break;
+                                 }
+                              }
+
+                              if (percusoEncontrado) 
+                              {
+                                 break;
+                              }
+                           }
+                     }
+
+                     if (percusoEncontrado) 
+                     {
+                           break;
+                     }
+
+                     conexao = conexao->prox;
+                  }
+               } 
+
+               if (percusoEncontrado)
+               {
+                  break;
+               }
+         }
+
+         atual = atual->prox;
+      }
+
+      // Print no resultado
+      if (percusoEncontrado)
+      {
+         printf("Percurso encontrado\n");
+
+         if (line2 == NULL) 
+         {
+               printf("Linha: %s\n", line1->Nome);
+               printf("Paragens:\n\n");
+
+               if (indiceOrigem < indiceDestino) 
+               {
+                  for (int i = indiceOrigem; i <= indiceDestino; i++) 
+                  {
+                     printf("%s - %s\n", line1->paragens[i].Nome, line1->paragens[i].Codigo);
+                  }
+               }
+               else
+               {
+                  
+                  for (int i = indiceOrigem; i >= indiceDestino; i--)
+                  {
+                     printf("%s - %s\n", line1->paragens[i].Nome, line1->paragens[i].Codigo);
+                  }
+               }
+         }
+         else 
+         {
+               printf("Linha de origem: %s\n", line1->Nome);
+               printf("Paragens:\n\n");
+
+
+               if (indiceOrigem < indiceparagem1)
+               {
+                  for (int i = indiceOrigem; i <= indiceparagem1; i++) 
+                  {
+                     printf("%s - %s\n", line1->paragens[i].Nome, line1->paragens[i].Codigo);
+                  }
+               }
+               else
+               {
+                  for(int i = indiceOrigem; i >= indiceparagem1; i--)
+                  {
+                     printf("%s - %s\n", line1->paragens[i].Nome, line1->paragens[i].Codigo);
+                  }
+               }
+
+               printf("Transicao para a linha de destino: %s\n", line2->Nome);
+               printf("Paragens:\n\n");
+
+               if (indiceparagem2 < indiceDestino)
+               {
+                  for (int i = indiceparagem2; i <= indiceDestino; i++) 
+                  {
+                     printf("%s - %s\n", line2->paragens[i].Nome, line2->paragens[i].Codigo);
+                  }
+               }
+               else
+               {
+                  for(int i = indiceparagem2; i >= indiceDestino; i--)
+                  {
+                     printf("%s - %s\n", line2->paragens[i].Nome, line2->paragens[i].Codigo);
+                  } 
+               }
+         }
+
+
+      }
+      else 
+      {
+         printf("Não foi encontrado um percuso");
+         return;
+      }
+}
+

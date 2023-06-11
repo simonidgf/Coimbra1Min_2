@@ -1,14 +1,18 @@
 #include "struct_functions.c"
+#include "dados.c"
 
+
+const char* nomearquivo = "info";
+Paragem* array_paragens = NULL;
+Linha* array_linhas = NULL;
+int numero_paragens = 0, numero_linhas = 0;
 
 void menuParagens(Paragem** array_paragens, Linha** array_linhas, int* numero_linhas, int* numero_paragens);
 void menuLinhas(Paragem** array_paragens, Linha** array_linhas, int* numero_linhas, int* numero_paragens);
 
 int main() {
-   Paragem* array_paragens = NULL;
-   Linha* array_linhas = NULL;
-   int numero_paragens = 0, numero_linhas = 0;
    int opcao;
+   carregarDados(&array_linhas, &numero_linhas, &array_paragens, &numero_paragens, nomearquivo);
 
    do {
       printf("\n=====================\n");
@@ -16,7 +20,10 @@ int main() {
       printf("=====================\n");
       printf("= 1. Linhas         =\n");
       printf("= 2. Paragens       =\n");
+      printf("= 3. Percurso       =\n");
+      printf("=====================\n");
       printf("= 0. Sair           =\n");
+      printf("= 99. Reset         =\n");
       printf("=====================\n");
 
       printf("Escolha uma opcao: ");
@@ -27,12 +34,25 @@ int main() {
          case 1:
             menuLinhas(&array_paragens, &array_linhas, &numero_linhas, &numero_paragens);
             break;
+
          case 2:
             menuParagens(&array_paragens, &array_linhas, &numero_linhas, &numero_paragens);
             break;
+
+         case 3:
+            calcularPercurso(array_paragens, array_linhas);
+            break;
+
          case 0:
+            guardarDados(array_linhas,numero_linhas, array_paragens, numero_paragens, nomearquivo);
             printf("Ate Ja :D ... \n");
             exit(0);
+
+         case 99:
+            array_paragens = NULL;
+            array_linhas = NULL;
+            numero_paragens = 0, numero_linhas = 0;
+            break;
          default:
             printf("Opcao invalida. Tente novamente.\n");
             break;
@@ -73,6 +93,7 @@ void menuParagens(Paragem** array_paragens, Linha** array_linhas, int* numero_li
          case 9:
             return;
          case 0:
+            guardarDados((*array_linhas),(*numero_linhas), (*array_paragens), (*numero_paragens), nomearquivo);
             printf("Ate Ja :D ... \n");
             exit(0);
          default:
@@ -112,76 +133,12 @@ void menuLinhas(Paragem** array_paragens, Linha** array_linhas, int* numero_linh
             visualizarLinhas(*array_linhas, *numero_linhas);
             break;
          case 4:
-         {
-            char NomeLinha[TAMANHO_MAX];
-            Linha l;
-            Paragem p;
-            int opcao_atualizar;
-
-            do {
-               printf("Que linha pretende atualizar (Nome): ");
-               scanf("%s", NomeLinha);
-               l = procuraLinhaEspecifica(*array_linhas, *numero_linhas, NomeLinha);
-               if (strcmp(l.Nome, "") == 0) {
-                  puts("Linha nao existe...\n");
-               } else {
-                  break;
-               }
-            } while (1);
-
-            printf("\n:.           Atualizar (%s)       .:\n", l.Nome);
-            printf(" : 1. Adicionar Paragem a uma Linha :\n");
-            printf(" : 2. Remover Paragem de uma Linha  :\n");
-            printf(" : 0. Voltar                        :\n");
-
-            do {
-               printf(".:> ");
-               scanf("%d", &opcao_atualizar);
-            } while (opcao_atualizar != 1 && opcao_atualizar != 2 && opcao_atualizar != 0);
-
-            switch (opcao_atualizar) {
-               case 0:
-                  return;
-               case 1:
-               {
-                  char NomeParagem[TAMANHO_MAX];
-                  do {
-                     printf("Paragem para adicionar: ");
-                     scanf("%s", NomeParagem);
-                     p = procurarParagemEspecifica(*array_paragens, *numero_paragens, NomeParagem);
-                     if (strcmp(p.Nome, "") == 0) {
-                        puts("Paragem nao existe...\n");
-                     } else {
-                        break;
-                     }
-                  } while (1);
-                  adicionarParagemLinha(&l, &p);
-                  break;
-               }
-               case 2:
-               {
-                  char NomeParagem[TAMANHO_MAX];
-                  do {
-                     printf("Paragem para Remover: ");
-                     scanf("%s", NomeParagem);
-                     p = procurarParagemEspecifica(*array_paragens, *numero_paragens, NomeParagem);
-                     if (strcmp(p.Nome, "") == 0) {
-                        puts("Paragem nao existe...\n");
-                     } else {
-                        break;
-                     }
-                  } while (1);
-                  removerParagemLinha(&l, p.Nome);
-                  break;
-               }
-               default:
-                  break;
-            }
+            atualizar(*array_paragens, *array_linhas, *numero_linhas, *numero_paragens);
             break;
-         }
          case 9:
             return;
          case 0:
+            guardarDados((*array_linhas),(*numero_linhas), (*array_paragens), (*numero_paragens), nomearquivo);
             printf("Ate Ja :D ... \n");
             exit(0);
          default:
