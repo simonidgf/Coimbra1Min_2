@@ -35,7 +35,10 @@ Linha procuraLinhaEspecifica(Linha* linhas, int numero_linhas, char NomeLinha[TA
 void adicionarLinhas(Linha** linhas, int* numero_linhas);
 void visualizarLinhas(Linha* linhas, int numero_linhas);
 bool eliminarLinha(Linha** linhas, int* numero_linhas);
-//Funcao Atualizar Linha (Ver Enunciado)
+// * Funcao Atualizar Linha (Ver Enunciado)
+void adicionarParagemLinha(Linha* linha, Paragem* paragem);
+bool removerParagemLinha(Linha* linha, char* nomeParagem);
+
 
 // * Paragens
 Paragem procurarParagemEspecifica(Paragem* paragens, int numero_paragens, char NomeParagem[TAMANHO_MAX]);
